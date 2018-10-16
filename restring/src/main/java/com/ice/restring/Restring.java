@@ -2,6 +2,7 @@ package com.ice.restring;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.os.Build;
 
 import java.util.List;
 import java.util.Map;
@@ -91,7 +92,9 @@ public abstract class Restring {
     private static void initViewTransformer() {
         viewTransformerManager = new ViewTransformerManager();
         viewTransformerManager.registerTransformer(new TextViewTransformer());
-        viewTransformerManager.registerTransformer(new ToolbarTransformer());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            viewTransformerManager.registerTransformer(new ToolbarTransformer());
+        }
         viewTransformerManager.registerTransformer(new SupportToolbarTransformer());
         viewTransformerManager.registerTransformer(new BottomNavigationViewTransformer());
         viewTransformerManager.registerTransformer(new TextInputLayoutTransformer());
