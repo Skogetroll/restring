@@ -127,6 +127,9 @@ class RestringLayoutInflater extends LayoutInflater {
     }
 
     private View applyChange(View view, AttributeSet attrs) {
+        if (viewTransformerManager == null) {
+            return null;
+        }
         return viewTransformerManager.transform(view, attrs);
     }
 

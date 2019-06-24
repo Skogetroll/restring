@@ -24,7 +24,8 @@ import static org.mockito.Mockito.when;
 @Config(sdk = {16, 19, 21, 23, 24, 26})
 public class RestringLayoutInflaterTest {
 
-    @Mock private ViewTransformerManager transformerManager;
+    @Mock
+    private ViewTransformerManager transformerManager;
     private RestringLayoutInflater restringLayoutInflater;
 
     @Before

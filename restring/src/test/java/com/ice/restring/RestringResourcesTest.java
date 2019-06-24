@@ -31,7 +31,8 @@ public class RestringResourcesTest {
     private static final String STR_VALUE_WITH_PARAM = "STR_VALUE %s";
     private static final String STR_VALUE_HTML = "STR_<b>value</b>";
 
-    @Mock private StringRepository repository;
+    @Mock
+    private StringRepository repository;
     private Resources resources;
     private RestringResources restringResources;
 

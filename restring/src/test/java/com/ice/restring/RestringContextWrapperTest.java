@@ -40,8 +40,10 @@ public class RestringContextWrapperTest {
     private RestringContextWrapper restringContextWrapper;
     private Context context;
     private Resources originalResources;
-    @Mock private StringRepository stringRepository;
-    @Mock private ViewTransformerManager transformerManager;
+    @Mock
+    private StringRepository stringRepository;
+    @Mock
+    private ViewTransformerManager transformerManager;
 
     @Before
     public void setUp() {
