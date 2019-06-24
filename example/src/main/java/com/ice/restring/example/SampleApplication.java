@@ -11,7 +11,7 @@ public class SampleApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Restring.init(this,
+        Restring.Companion.init(this,
                 new RestringConfig.Builder()
                         .persist(true)
                         .stringsLoader(new SampleStringsLoader())

@@ -13,6 +13,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(Restring.wrapContext(newBase));
+        super.attachBaseContext(Restring.Companion.getInstance().wrapContext(newBase));
     }
 }
