@@ -30,7 +30,7 @@ private constructor(context: Context, config: RestringConfig = RestringConfig.de
         private var isInitialized = false
         private var INSTANCE: Restring? = null
 
-        val instance: Restring
+        private val instance: Restring
             get() = INSTANCE!!
 
         /**
@@ -40,11 +40,46 @@ private constructor(context: Context, config: RestringConfig = RestringConfig.de
          * @param config  of the Restring.
          */
         @JvmOverloads
-        public fun init(context: Context, config: RestringConfig = RestringConfig.default) {
+        fun init(context: Context, config: RestringConfig = RestringConfig.default) {
             if (!isInitialized) {
                 isInitialized = true
                 INSTANCE = Restring(context, config)
             }
+        }
+
+        /**
+         * Wraps context of an activity to provide Restring features.
+         *
+         * @param base context of an activity.
+         * @return the Restring wrapped context.
+         */
+        fun wrapContext(base: Context): ContextWrapper {
+            return instance.wrapContext(base)
+        }
+
+        /**
+         * Set strings of a language.
+         *
+         * @param language   the strings are for.
+         * @param newStrings the strings of the language.
+         */
+        fun setStrings(language: String, newStrings: Map<String, String>) {
+            instance.setStrings(language, newStrings)
+        }
+
+        /**
+         * Set a single string for a language.
+         *
+         * @param language the string is for.
+         * @param key      the string key.
+         * @param value    the string value.
+         */
+        fun setString(language: String, key: String, value: String) {
+            instance.setString(language, key, value)
+        }
+
+        fun hasStrings(language: String): Boolean {
+            return instance.hasStrings(language)
         }
     }
 
@@ -77,6 +112,15 @@ private constructor(context: Context, config: RestringConfig = RestringConfig.de
      */
     fun setString(language: String, key: String, value: String) {
         stringRepository.setString(language, key, value)
+    }
+
+    /**
+     * Check if there're string for language
+     * @param language for which to check
+     * @return true if string repository is not empty
+     */
+    fun hasStrings(language: String): Boolean {
+        return stringRepository.getStrings(language).isNotEmpty()
     }
 
     private fun initStringRepository(context: Context, config: RestringConfig) {
@@ -126,8 +170,3 @@ private constructor(context: Context, config: RestringConfig = RestringConfig.de
         fun getStrings(language: String): Map<String, String>
     }
 }
-/**
- * Initialize Restring with default configuration.
- *
- * @param context of the application.
- */
