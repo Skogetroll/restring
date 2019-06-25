@@ -62,7 +62,7 @@ internal class RestringResources(res: Resources,
         val value = getQuantityStringFromRepository(id, quantity)
         return if (value != null) {
             String.format(value, *formatArgs)
-        } else super.getQuantityString(id, quantity)
+        } else super.getQuantityString(id, quantity, formatArgs)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
