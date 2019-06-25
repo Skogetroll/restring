@@ -4,23 +4,21 @@ import android.support.design.widget.TextInputLayout
 import android.util.AttributeSet
 import android.view.View
 
-internal class TextInputLayoutTransformer : ViewTransformerManager.Transformer {
+internal class TextInputLayoutTransformer : ViewTransformerManager.Transformer<TextInputLayout> {
 
-    override val viewType: Class<out View>
+    override val viewType: Class<out TextInputLayout>
         get() = TextInputLayout::class.java
 
-    override fun transform(view: View?, attrs: AttributeSet): View? {
-        if (view == null || !viewType.isInstance(view)) {
-            return view
+    override fun transform(view: View?, attrs: AttributeSet): TextInputLayout? {
+        if (view as? TextInputLayout == null) {
+            return null
         }
         val resources = view.context.resources
 
         for (index in 0 until attrs.attributeCount) {
-            val attributeName = attrs.getAttributeName(index)
-            val value: String?
-            when (attributeName) {
+            when (attrs.getAttributeName(index)) {
                 ATTRIBUTE_ANDROID_HINT, ATTRIBUTE_HINT -> {
-                    value = attrs.getAttributeValue(index)
+                    val value: String? = attrs.getAttributeValue(index)
                     if (value != null && value.startsWith("@")) {
                         setHintForView(view, resources.getString(
                                 attrs.getAttributeResourceValue(index, 0)))
@@ -34,8 +32,8 @@ internal class TextInputLayoutTransformer : ViewTransformerManager.Transformer {
         return view
     }
 
-    private fun setHintForView(view: View, text: String) {
-        (view as TextInputLayout).hint = text
+    private fun setHintForView(view: TextInputLayout, text: String) {
+        view.hint = text
     }
 
     companion object {

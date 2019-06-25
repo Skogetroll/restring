@@ -8,28 +8,27 @@ import android.widget.TextView
  * A transformer which transforms TextView(or any view extends it like Button, EditText, ...):
  * it transforms "text" & "hint" attributes.
  */
-internal class TextViewTransformer : ViewTransformerManager.Transformer {
+internal class TextViewTransformer : ViewTransformerManager.Transformer<TextView> {
 
-    override val viewType: Class<out View>
+    override val viewType: Class<out TextView>
         get() = TextView::class.java
 
-    override fun transform(view: View?, attrs: AttributeSet): View? {
-        if (view == null || !viewType.isInstance(view)) {
-            return view
+    override fun transform(view: View?, attrs: AttributeSet): TextView? {
+        if (view as? TextView == null) {
+            return null
         }
         val resources = view.context.resources
 
         for (index in 0 until attrs.attributeCount) {
-            val attributeName = attrs.getAttributeName(index)
-            when (attributeName) {
+            when (attrs.getAttributeName(index)) {
                 ATTRIBUTE_ANDROID_TEXT, ATTRIBUTE_TEXT -> {
-                    val value = attrs.getAttributeValue(index)
+                    val value: String? = attrs.getAttributeValue(index)
                     if (value != null && value.startsWith("@")) {
                         setTextForView(view, resources.getString(attrs.getAttributeResourceValue(index, 0)))
                     }
                 }
                 ATTRIBUTE_ANDROID_HINT, ATTRIBUTE_HINT -> {
-                    val value = attrs.getAttributeValue(index)
+                    val value: String? = attrs.getAttributeValue(index)
                     if (value != null && value.startsWith("@")) {
                         setHintForView(view, resources.getString(attrs.getAttributeResourceValue(index, 0)))
                     }
@@ -39,12 +38,12 @@ internal class TextViewTransformer : ViewTransformerManager.Transformer {
         return view
     }
 
-    private fun setTextForView(view: View, text: String) {
-        (view as TextView).text = text
+    private fun setTextForView(view: TextView, text: String) {
+        view.text = text
     }
 
-    private fun setHintForView(view: View, text: String) {
-        (view as TextView).hint = text
+    private fun setHintForView(view: TextView, text: String) {
+        view.hint = text
     }
 
     companion object {

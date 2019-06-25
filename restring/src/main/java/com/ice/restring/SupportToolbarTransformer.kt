@@ -7,20 +7,19 @@ import android.view.View
 /**
  * A transformer which transforms Toolbar(from support library): it transforms the text set as title.
  */
-internal class SupportToolbarTransformer : ViewTransformerManager.Transformer {
+internal class SupportToolbarTransformer : ViewTransformerManager.Transformer<Toolbar> {
 
-    override val viewType: Class<out View>
+    override val viewType: Class<out Toolbar>
         get() = Toolbar::class.java
 
-    override fun transform(view: View?, attrs: AttributeSet): View? {
-        if (view == null || !viewType.isInstance(view)) {
-            return view
+    override fun transform(view: View?, attrs: AttributeSet): Toolbar? {
+        if (view as? Toolbar == null) {
+            return null
         }
         val resources = view.context.resources
 
         for (index in 0 until attrs.attributeCount) {
-            val attributeName = attrs.getAttributeName(index)
-            when (attributeName) {
+            when (attrs.getAttributeName(index)) {
                 ATTRIBUTE_APP_TITLE, ATTRIBUTE_TITLE -> {
                     val value = attrs.getAttributeValue(index)
                     if (value != null && value.startsWith("@")) {
@@ -32,8 +31,8 @@ internal class SupportToolbarTransformer : ViewTransformerManager.Transformer {
         return view
     }
 
-    private fun setTitleForView(view: View, text: String) {
-        (view as Toolbar).title = text
+    private fun setTitleForView(view: Toolbar, text: String) {
+        view.title = text
     }
 
     companion object {

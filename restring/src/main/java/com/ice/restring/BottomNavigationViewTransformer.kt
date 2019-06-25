@@ -15,21 +15,19 @@ import java.util.*
 /**
  * A transformer which transforms BottomNavigationView: it transforms the texts coming from the menu.
  */
-internal class BottomNavigationViewTransformer : ViewTransformerManager.Transformer {
+internal class BottomNavigationViewTransformer : ViewTransformerManager.Transformer<BottomNavigationView> {
 
-    override val viewType: Class<out View>
+    override val viewType: Class<out BottomNavigationView>
         get() = BottomNavigationView::class.java
 
-    override fun transform(view: View?, attrs: AttributeSet): View? {
-        if (view == null || !viewType.isInstance(view)) {
-            return view
+    override fun transform(view: View?, attrs: AttributeSet): BottomNavigationView? {
+        if (view as? BottomNavigationView == null) {
+            return null
         }
         val resources = view.context.resources
-        val bottomNavigationView = view as BottomNavigationView
 
         for (index in 0 until attrs.attributeCount) {
-            val attributeName = attrs.getAttributeName(index)
-            when (attributeName) {
+            when (attrs.getAttributeName(index)) {
                 ATTRIBUTE_APP_MENU, ATTRIBUTE_MENU -> {
                     val value = attrs.getAttributeValue(index)
                     if (value != null && value.startsWith("@")) {
@@ -39,10 +37,10 @@ internal class BottomNavigationViewTransformer : ViewTransformerManager.Transfor
                         for ((key, value1) in itemStrings) {
 
                             if (value1.title != 0) {
-                                bottomNavigationView.menu.findItem(key).title = resources.getString(value1.title)
+                                view.menu.findItem(key).title = resources.getString(value1.title)
                             }
                             if (value1.titleCondensed != 0) {
-                                bottomNavigationView.menu.findItem(key).titleCondensed = resources.getString(value1.titleCondensed)
+                                view.menu.findItem(key).titleCondensed = resources.getString(value1.titleCondensed)
                             }
                         }
                     }

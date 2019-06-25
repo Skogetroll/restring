@@ -11,14 +11,14 @@ import java.util.*
  */
 internal class ViewTransformerManager {
 
-    private val transformers = ArrayList<Pair<Class<out View>, Transformer>>()
+    private val transformers = ArrayList<Pair<Class<out View>, Transformer<View>>>()
 
     /**
      * Register a new view transformer to be applied on newly inflating views.
      *
      * @param transformer to be added to transformers list.
      */
-    fun registerTransformer(transformer: Transformer) {
+    fun registerTransformer(transformer: Transformer<View>) {
         transformers.add(Pair(transformer.viewType, transformer))
     }
 
@@ -53,13 +53,13 @@ internal class ViewTransformerManager {
     /**
      * A view transformer skeleton.
      */
-    internal interface Transformer {
+    internal interface Transformer<out V : View> {
         /**
          * The type of view this transformer is for.
          *
          * @return the type of view.
          */
-        val viewType: Class<out View>
+        val viewType: Class<out V>
 
         /**
          * Apply transformation to a view.
@@ -68,6 +68,6 @@ internal class ViewTransformerManager {
          * @param attrs attributes of the view.
          * @return the transformed view.
          */
-        fun transform(view: View?, attrs: AttributeSet): View?
+        fun transform(view: View?, attrs: AttributeSet): V?
     }
 }
