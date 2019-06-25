@@ -2,11 +2,9 @@ package com.ice.restring.shadow
 
 
 import android.content.res.AssetManager
-
 import org.robolectric.annotation.Implements
 import org.robolectric.shadows.ShadowAssetManager
-
-import java.util.LinkedHashMap
+import java.util.*
 
 @Implements(AssetManager::class)
 class MyShadowAssetManager : ShadowAssetManager() {

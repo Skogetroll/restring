@@ -3,8 +3,7 @@ package com.ice.restring
 import android.util.AttributeSet
 import android.util.Pair
 import android.view.View
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Manages all view transformers as a central point for layout inflater.

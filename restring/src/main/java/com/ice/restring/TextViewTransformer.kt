@@ -1,6 +1,5 @@
 package com.ice.restring
 
-import android.content.res.Resources
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView

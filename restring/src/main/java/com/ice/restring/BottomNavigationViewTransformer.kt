@@ -2,18 +2,15 @@ package com.ice.restring
 
 import android.annotation.SuppressLint
 import android.content.res.Resources
-import android.content.res.XmlResourceParser
 import android.support.design.widget.BottomNavigationView
 import android.util.AttributeSet
 import android.util.Pair
 import android.util.Xml
 import android.view.View
-
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
-
 import java.io.IOException
-import java.util.HashMap
+import java.util.*
 
 /**
  * A transformer which transforms BottomNavigationView: it transforms the texts coming from the menu.

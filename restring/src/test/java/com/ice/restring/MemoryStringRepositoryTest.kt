@@ -1,18 +1,16 @@
 package com.ice.restring
 
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-
-import java.util.LinkedHashMap
-
-import org.junit.Assert.assertEquals
+import java.util.*
 
 @RunWith(JUnit4::class)
 class MemoryStringRepositoryTest {
 
-    private var stringRepository: StringRepository? = null
+    private lateinit var stringRepository: StringRepository
 
     @Before
     fun setUp() {
@@ -24,9 +22,9 @@ class MemoryStringRepositoryTest {
         val LANGUAGE = "en"
         val strings = generateStrings(10)
 
-        stringRepository!!.setStrings(LANGUAGE, strings)
+        stringRepository.setStrings(LANGUAGE, strings)
 
-        assertEquals(strings, stringRepository!!.getStrings(LANGUAGE))
+        assertEquals(strings, stringRepository.getStrings(LANGUAGE))
     }
 
     @Test
@@ -34,10 +32,10 @@ class MemoryStringRepositoryTest {
         val LANGUAGE = "en"
         val STR_COUNT = 10
         val strings = generateStrings(STR_COUNT)
-        stringRepository!!.setStrings(LANGUAGE, strings)
+        stringRepository.setStrings(LANGUAGE, strings)
 
         for (i in 0 until STR_COUNT) {
-            assertEquals(stringRepository!!.getString(LANGUAGE, "key$i"), "value$i")
+            assertEquals(stringRepository.getString(LANGUAGE, "key$i"), "value$i")
         }
     }
 
@@ -47,10 +45,10 @@ class MemoryStringRepositoryTest {
         val STR_COUNT = 10
         val strings = generateStrings(STR_COUNT)
 
-        stringRepository!!.setStrings(LANGUAGE, strings)
-        stringRepository!!.setString(LANGUAGE, "key5", "aNewValue")
+        stringRepository.setStrings(LANGUAGE, strings)
+        stringRepository.setString(LANGUAGE, "key5", "aNewValue")
 
-        assertEquals(stringRepository!!.getString(LANGUAGE, "key5"), "aNewValue")
+        assertEquals(stringRepository.getString(LANGUAGE, "key5"), "aNewValue")
     }
 
     private fun generateStrings(count: Int): Map<String, String> {

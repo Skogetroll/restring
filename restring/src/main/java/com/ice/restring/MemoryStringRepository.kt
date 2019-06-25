@@ -1,6 +1,6 @@
 package com.ice.restring
 
-import java.util.LinkedHashMap
+import java.util.*
 
 /**
  * A StringRepository which keeps the strings ONLY in memory.
@@ -24,9 +24,7 @@ internal class MemoryStringRepository : StringRepository {
     }
 
     override fun getString(language: String, key: String): String? {
-        return if (!strings.containsKey(language) || !strings[language]!!.containsKey(key)) {
-            null
-        } else strings[language]?.get(key)
+        return strings[language]?.get(key)
     }
 
     override fun getStrings(language: String): MutableMap<String, String> {

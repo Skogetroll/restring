@@ -1,36 +1,29 @@
 package com.ice.restring
 
+import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
-import android.view.View
-
 import com.ice.restring.application.TestApplication
-
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito
+import org.mockito.Mockito.*
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
-
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertSame
-import org.junit.Assert.assertTrue
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito.doReturn
-import org.mockito.Mockito.verifyZeroInteractions
-import org.mockito.Mockito.`when`
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = TestApplication::class)
 class TextInputLayoutTransformerTest {
 
-    private var transformer: TextInputLayoutTransformer? = null
+    private lateinit var transformer: TextInputLayoutTransformer
 
     private val context: Context
         get() {
@@ -52,12 +45,12 @@ class TextInputLayoutTransformerTest {
     fun shouldTransformTextInputLayout() {
         val context = context
 
-        var view = transformer!!.transform(TextInputLayout(context), getAttributeSet(false))
+        var view = transformer.transform(TextInputLayout(context), getAttributeSet(false))
 
         assertTrue(view is TextInputLayout)
         assertEquals((view as TextInputLayout).hint, HINT_ATTR_VALUE)
 
-        view = transformer!!.transform(TextInputLayout(context), getAttributeSet(true))
+        view = transformer.transform(TextInputLayout(context), getAttributeSet(true))
 
         assertTrue(view is TextInputLayout)
         assertEquals((view as TextInputLayout).hint, HINT_ATTR_VALUE)
@@ -67,12 +60,12 @@ class TextInputLayoutTransformerTest {
     fun shouldTransformExtendedViews() {
         val context = context
 
-        var view = transformer!!.transform(ExtendedTextInputLayout(context), getAttributeSet(false))
+        var view = transformer.transform(ExtendedTextInputLayout(context), getAttributeSet(false))
 
         assertTrue(view is ExtendedTextInputLayout)
         assertEquals((view as ExtendedTextInputLayout).hint, HINT_ATTR_VALUE)
 
-        view = transformer!!.transform(ExtendedTextInputLayout(context), getAttributeSet(true))
+        view = transformer.transform(ExtendedTextInputLayout(context), getAttributeSet(true))
 
         assertTrue(view is ExtendedTextInputLayout)
         assertEquals((view as ExtendedTextInputLayout).hint, HINT_ATTR_VALUE)
@@ -84,7 +77,7 @@ class TextInputLayoutTransformerTest {
         val attributeSet = getAttributeSet(false)
         val recyclerView = RecyclerView(context)
 
-        val view = transformer!!.transform(recyclerView, attributeSet)
+        val view = transformer.transform(recyclerView, attributeSet)
 
         assertSame(view, recyclerView)
         verifyZeroInteractions(attributeSet)

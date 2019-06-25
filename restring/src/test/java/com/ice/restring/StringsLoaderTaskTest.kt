@@ -1,23 +1,19 @@
 package com.ice.restring
 
 import com.ice.restring.shadow.MyShadowAsyncTask
-
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
+import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-
-import java.util.Arrays
-import java.util.HashMap
-
-import org.junit.Assert.assertEquals
-import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import java.util.*
 
 
 @RunWith(RobolectricTestRunner::class)

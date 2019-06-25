@@ -1,33 +1,27 @@
 package com.ice.restring
 
+import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
-import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
-
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertSame
-import org.junit.Assert.assertTrue
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito.doReturn
-import org.mockito.Mockito.verifyZeroInteractions
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito
+import org.mockito.Mockito.*
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class TextViewTransformerTest {
 
-    private var transformer: TextViewTransformer? = null
+    private lateinit var transformer: TextViewTransformer
 
     private val context: Context
         get() {
@@ -50,13 +44,13 @@ class TextViewTransformerTest {
     fun shouldTransformTextView() {
         val context = context
 
-        var view = transformer!!.transform(TextView(context), getAttributeSet(false))
+        var view = transformer.transform(TextView(context), getAttributeSet(false))
 
         assertTrue(view is TextView)
         assertEquals((view as TextView).text, TEXT_ATTR_VALUE)
         assertEquals(view.hint, HINT_ATTR_VALUE)
 
-        view = transformer!!.transform(TextView(context), getAttributeSet(true))
+        view = transformer.transform(TextView(context), getAttributeSet(true))
 
         assertTrue(view is TextView)
         assertEquals((view as TextView).text, TEXT_ATTR_VALUE)
@@ -67,13 +61,13 @@ class TextViewTransformerTest {
     fun shouldTransformExtendedViews() {
         val context = context
 
-        var view = transformer!!.transform(EditText(context), getAttributeSet(false))
+        var view = transformer.transform(EditText(context), getAttributeSet(false))
 
         assertTrue(view is EditText)
         assertEquals((view as EditText).text.toString(), TEXT_ATTR_VALUE)
         assertEquals(view.hint, HINT_ATTR_VALUE)
 
-        view = transformer!!.transform(EditText(context), getAttributeSet(true))
+        view = transformer.transform(EditText(context), getAttributeSet(true))
 
         assertTrue(view is EditText)
         assertEquals((view as EditText).text.toString(), TEXT_ATTR_VALUE)
@@ -86,7 +80,7 @@ class TextViewTransformerTest {
         val attributeSet = getAttributeSet(false)
         val recyclerView = RecyclerView(context)
 
-        val view = transformer!!.transform(recyclerView, attributeSet)
+        val view = transformer.transform(recyclerView, attributeSet)
 
         assertSame(view, recyclerView)
         verifyZeroInteractions(attributeSet)
@@ -108,14 +102,14 @@ class TextViewTransformerTest {
     }
 
     companion object {
-        private val TEXT_ATTR_INDEX = 3
-        private val TEXT_RES_ID = 0x7f0f0123
-        private val TEXT_ATTR_KEY = "text"
-        private val TEXT_ATTR_VALUE = "TEXT_ATTR_VALUE"
+        private const val TEXT_ATTR_INDEX = 3
+        private const val TEXT_RES_ID = 0x7f0f0123
+        private const val TEXT_ATTR_KEY = "text"
+        private const val TEXT_ATTR_VALUE = "TEXT_ATTR_VALUE"
 
-        private val HINT_ATTR_INDEX = 2
-        private val HINT_RES_ID = 0x7f0f0124
-        private val HINT_ATTR_KEY = "hint"
-        private val HINT_ATTR_VALUE = "HINT_ATTR_VALUE"
+        private const val HINT_ATTR_INDEX = 2
+        private const val HINT_RES_ID = 0x7f0f0124
+        private const val HINT_ATTR_KEY = "hint"
+        private const val HINT_ATTR_VALUE = "HINT_ATTR_VALUE"
     }
 }

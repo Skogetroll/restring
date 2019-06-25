@@ -1,8 +1,7 @@
 package com.ice.restring
 
 import android.os.AsyncTask
-
-import java.util.LinkedHashMap
+import java.util.*
 
 /**
  * Try to load all strings for different languages by a StringsLoader.

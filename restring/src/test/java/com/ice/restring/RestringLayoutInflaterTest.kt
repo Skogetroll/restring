@@ -3,22 +3,18 @@ package com.ice.restring
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.stubbing.Answer
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
-
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.atLeastOnce
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [16, 19, 21, 23, 24, 26])

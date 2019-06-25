@@ -148,7 +148,7 @@ internal class RestringLayoutInflater(
         // If CustomViewCreation is off skip this.
         if (view == null && name.indexOf('.') > -1) {
             if (mConstructorArgs == null)
-                mConstructorArgs = ReflectionUtils.getField(LayoutInflater::class.java!!, "mConstructorArgs")
+                mConstructorArgs = ReflectionUtils.getField(LayoutInflater::class.java, "mConstructorArgs")
 
             val mConstructorArgsArr = ReflectionUtils.getValue(mConstructorArgs!!, this) as Array<Any>
             val lastContext = mConstructorArgsArr[0]

@@ -1,32 +1,28 @@
 package com.ice.restring
 
+import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
-import android.view.View
 import android.widget.Toolbar
-
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mockito
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
-
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.junit.Assert.assertSame
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito.doReturn
-import org.mockito.Mockito.verifyZeroInteractions
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito
+import org.mockito.Mockito.*
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class ToolbarTransformerTest {
 
-    private var transformer: ToolbarTransformer? = null
+    private lateinit var transformer: ToolbarTransformer
 
     private val context: Context
         get() {
@@ -48,12 +44,12 @@ class ToolbarTransformerTest {
     fun shouldTransformToolbar() {
         val context = context
 
-        var view = transformer!!.transform(Toolbar(context), getAttributeSet(false))
+        var view = transformer.transform(Toolbar(context), getAttributeSet(false))
 
         assertTrue(view is Toolbar)
         assertEquals((view as Toolbar).title, TITLE_ATTR_VALUE)
 
-        view = transformer!!.transform(Toolbar(context), getAttributeSet(true))
+        view = transformer.transform(Toolbar(context), getAttributeSet(true))
 
         assertTrue(view is Toolbar)
         assertEquals((view as Toolbar).title, TITLE_ATTR_VALUE)
@@ -65,7 +61,7 @@ class ToolbarTransformerTest {
         val attributeSet = getAttributeSet(false)
         val recyclerView = RecyclerView(context)
 
-        val view = transformer!!.transform(recyclerView, attributeSet)
+        val view = transformer.transform(recyclerView, attributeSet)
 
         assertSame(view, recyclerView)
         verifyZeroInteractions(attributeSet)
@@ -84,9 +80,9 @@ class ToolbarTransformerTest {
     }
 
     companion object {
-        private val TITLE_ATTR_INDEX = 3
-        private val TITLE_RES_ID = 0x7f0f0123
-        private val TITLE_ATTR_KEY = "title"
-        private val TITLE_ATTR_VALUE = "TITLE_ATTR_VALUE"
+        private const val TITLE_ATTR_INDEX = 3
+        private const val TITLE_RES_ID = 0x7f0f0123
+        private const val TITLE_ATTR_KEY = "title"
+        private const val TITLE_ATTR_VALUE = "TITLE_ATTR_VALUE"
     }
 }

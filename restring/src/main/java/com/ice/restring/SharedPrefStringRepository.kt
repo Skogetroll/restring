@@ -2,8 +2,8 @@ package com.ice.restring
 
 import android.content.Context
 import android.content.SharedPreferences
-
-import java.util.LinkedHashMap
+import org.json.JSONObject
+import java.util.*
 
 /**
  * A StringRepository which saves/loads the strings in Shared Preferences.
@@ -14,11 +14,12 @@ import java.util.LinkedHashMap
  */
 internal class SharedPrefStringRepository(context: Context) : StringRepository {
 
-    private var sharedPreferences: SharedPreferences? = null
+    private val sharedPreferences: SharedPreferences by lazy {
+        context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+    }
     private val memoryStringRepository = MemoryStringRepository()
 
     init {
-        initSharedPreferences(context)
         loadStrings()
     }
 
@@ -43,20 +44,11 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
         return memoryStringRepository.getStrings(language)
     }
 
-    private fun initSharedPreferences(context: Context) {
-        if (sharedPreferences == null) {
-            sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
-        }
-    }
-
     private fun loadStrings() {
-        val strings = sharedPreferences!!.all
+        val strings = sharedPreferences.all
         for ((language, value1) in strings) {
-            if (value1 !is String) {
-                continue
-            }
+            val value = value1 as? String ?: continue
 
-            val value = value1 as String
             val keyValues = deserializeKeyValues(value)
             memoryStringRepository.setStrings(language, keyValues)
         }
@@ -64,34 +56,29 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
 
     private fun saveStrings(language: String, strings: Map<String, String>) {
         val content = serializeKeyValues(strings)
-        sharedPreferences!!.edit()
+        sharedPreferences.edit()
                 .putString(language, content)
                 .apply()
     }
 
     private fun deserializeKeyValues(content: String): Map<String, String> {
         val keyValues = LinkedHashMap<String, String>()
-        val items = content.split(",".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
-        for (item in items) {
-            val itemKeyValue = item.split("=".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
-            keyValues[itemKeyValue[0]] = itemKeyValue[1].replace(",,".toRegex(), ",")
+        try {
+            val jsonObject = JSONObject(content)
+            for (key in jsonObject.keys()) {
+                keyValues[key] = jsonObject[key] as String
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
         return keyValues
     }
 
     private fun serializeKeyValues(keyValues: Map<String, String>): String {
-        val content = StringBuilder()
-        for ((key, value) in keyValues) {
-            content.append(key)
-                    .append("=")
-                    .append(value.replace(",".toRegex(), ",,"))
-                    .append(",")
-        }
-        content.deleteCharAt(content.length - 1)
-        return content.toString()
+        return JSONObject(keyValues).toString()
     }
 
     companion object {
-        private val SHARED_PREF_NAME = "Restrings"
+        private const val SHARED_PREF_NAME = "Restrings"
     }
 }

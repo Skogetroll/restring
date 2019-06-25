@@ -13,7 +13,7 @@ import java.lang.reflect.Method
  */
 internal object ReflectionUtils {
 
-    private val TAG = ReflectionUtils::class.java!!.getSimpleName()
+    private val TAG = ReflectionUtils::class.java.simpleName
 
     fun getField(clazz: Class<*>, fieldName: String): Field? {
         try {

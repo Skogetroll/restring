@@ -30,7 +30,7 @@ private constructor(context: Context, config: RestringConfig = RestringConfig.de
         private var isInitialized = false
         private var INSTANCE: Restring? = null
 
-        public val instance: Restring
+        val instance: Restring
             get() = INSTANCE!!
 
         /**
