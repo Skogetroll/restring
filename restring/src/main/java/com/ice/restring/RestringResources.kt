@@ -62,7 +62,7 @@ internal class RestringResources(res: Resources,
         val value = getQuantityStringFromRepository(id, quantity)
         return if (value != null) {
             String.format(value, *formatArgs)
-        } else super.getQuantityString(id, quantity, formatArgs)
+        } else super.getQuantityString(id, quantity, *formatArgs)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -77,7 +77,7 @@ internal class RestringResources(res: Resources,
         val pluralRules = PluralRules.forLocale(currentLocale)
         val rule = pluralRules.select(quantity.toDouble())
 
-        val stringKey = "${getResourceEntryName(id)}.$rule"
+        val stringKey = "${getResourceEntryName(id)}#$rule"
         stringRepository.getString(RestringUtil.currentLanguage, stringKey)
     } catch (ex: NotFoundException) {
         null
@@ -85,6 +85,7 @@ internal class RestringResources(res: Resources,
 
     private fun fromHtml(source: String): CharSequence =
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                @Suppress("DEPRECATION")
                 Html.fromHtml(source)
             } else {
                 Html.fromHtml(source, Html.FROM_HTML_MODE_COMPACT)
