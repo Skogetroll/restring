@@ -50,14 +50,12 @@ internal class RestringResources(res: Resources,
         null
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     @Throws(NotFoundException::class)
     override fun getQuantityString(@PluralsRes id: Int, quantity: Int): String {
         val value = getQuantityStringFromRepository(id, quantity)
         return value ?: super.getQuantityString(id, quantity)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun getQuantityString(id: Int, quantity: Int, vararg formatArgs: Any?): String {
         val value = getQuantityStringFromRepository(id, quantity)
         return if (value != null) {
@@ -65,18 +63,19 @@ internal class RestringResources(res: Resources,
         } else super.getQuantityString(id, quantity, *formatArgs)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun getQuantityText(id: Int, quantity: Int): CharSequence {
         val value = getQuantityStringFromRepository(id, quantity)
         return value?.let { fromHtml(it) } ?: super.getQuantityText(id, quantity)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun getQuantityStringFromRepository(@PluralsRes id: Int, quantity: Int): String? = try {
         val currentLocale = Locale(RestringUtil.currentLanguage)
-        val pluralRules = PluralRules.forLocale(currentLocale)
-        val rule = pluralRules.select(quantity.toDouble())
-
+        val rule = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val pluralRules = PluralRules.forLocale(currentLocale)
+            pluralRules.select(quantity.toDouble()) ?: DEFAULT_PLURAL_RULE
+        } else {
+            DEFAULT_PLURAL_RULE
+        }
         val stringKey = "${getResourceEntryName(id)}#$rule"
         stringRepository.getString(RestringUtil.currentLanguage, stringKey)
     } catch (ex: NotFoundException) {
@@ -90,4 +89,8 @@ internal class RestringResources(res: Resources,
             } else {
                 Html.fromHtml(source, Html.FROM_HTML_MODE_COMPACT)
             }
+
+    companion object {
+        private const val DEFAULT_PLURAL_RULE = "other"
+    }
 }
