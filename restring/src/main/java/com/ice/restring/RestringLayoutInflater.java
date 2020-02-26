@@ -90,12 +90,12 @@ class RestringLayoutInflater extends LayoutInflater {
             return;
         }
 
-        final Method setPrivateFactoryMethod = ReflectionUtils
+        final Method setPrivateFactoryMethod = ReflectionUtils.INSTANCE
                 .getMethod(LayoutInflater.class, "setPrivateFactory");
 
         if (setPrivateFactoryMethod != null) {
             PrivateWrapperFactory2 newFactory = new PrivateWrapperFactory2((Factory2) getContext());
-            ReflectionUtils.invokeMethod(
+            ReflectionUtils.INSTANCE.invokeMethod(
                     this,
                     setPrivateFactoryMethod,
                     newFactory);
@@ -182,22 +182,23 @@ class RestringLayoutInflater extends LayoutInflater {
                     /* Do nothing. */
                 }
             } else {
+                ReflectionUtils reflectionUtils = ReflectionUtils.INSTANCE;
                 if (mConstructorArgs == null)
-                    mConstructorArgs = ReflectionUtils.getField(LayoutInflater.class, "mConstructorArgs");
+                    mConstructorArgs = reflectionUtils.getField(LayoutInflater.class, "mConstructorArgs");
 
-                final Object[] mConstructorArgsArr = (Object[]) ReflectionUtils.getValue(mConstructorArgs, this);
+                final Object[] mConstructorArgsArr = (Object[]) reflectionUtils.getValue(mConstructorArgs, this);
                 final Object lastContext = mConstructorArgsArr[0];
                 // The LayoutInflater actually finds out the correct context to use. We just need to set
                 // it on the mConstructor for the internal method.
                 // Set the constructor ars up for the createView, not sure why we can't pass these in.
                 mConstructorArgsArr[0] = viewContext;
-                ReflectionUtils.setValue(mConstructorArgs, this, mConstructorArgsArr);
+                reflectionUtils.setValue(mConstructorArgs, this, mConstructorArgsArr);
                 try {
                     view = createView(name, null, attrs);
                 } catch (ClassNotFoundException ignored) {
                 } finally {
                     mConstructorArgsArr[0] = lastContext;
-                    ReflectionUtils.setValue(mConstructorArgs, this, mConstructorArgsArr);
+                    reflectionUtils.setValue(mConstructorArgs, this, mConstructorArgsArr);
                 }
             }
         }

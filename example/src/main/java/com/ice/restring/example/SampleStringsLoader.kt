@@ -15,7 +15,7 @@ import java.util.HashMap
 class SampleStringsLoader : Restring.StringsLoader {
 
     override val languages: List<String>
-        get() = Arrays.asList("en", "de", "fa")
+        get() = listOf("en", "de", "fa")
 
     override fun getStrings(language: String): Map<String, String> {
         val map = HashMap<String, String>()
@@ -36,7 +36,4 @@ class SampleStringsLoader : Restring.StringsLoader {
         return map
     }
 
-    override fun onComplete() {
-
-    }
 }
