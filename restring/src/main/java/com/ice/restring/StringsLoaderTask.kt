@@ -1,8 +1,7 @@
 package com.ice.restring
 
 import android.os.AsyncTask
-
-import java.util.LinkedHashMap
+import java.util.*
 
 /**
  * Try to load all strings for different languages by a StringsLoader.
@@ -12,7 +11,7 @@ import java.util.LinkedHashMap
  * FIRST it retrieves all supported languages,
  * THEN it retrieves all strings(key, value) for each language.
  */
-class StringsLoaderTask(private val stringsLoader: Restring.StringsLoader,
+internal class StringsLoaderTask(private val stringsLoader: Restring.StringsLoader,
                                  private val stringRepository: StringRepository) : AsyncTask<Void, Void, Map<String, Map<String, String>>>() {
 
     fun run() {
@@ -25,17 +24,17 @@ class StringsLoaderTask(private val stringsLoader: Restring.StringsLoader,
         val languages = stringsLoader.languages
         for (lang in languages) {
             val keyValues = stringsLoader.getStrings(lang)
-            if (keyValues != null && keyValues.isNotEmpty()) {
+            if (keyValues.isNotEmpty()) {
                 langStrings[lang] = keyValues
             }
         }
+
         return langStrings
     }
 
     override fun onPostExecute(langStrings: Map<String, Map<String, String>>) {
         for ((key, value) in langStrings) {
             stringRepository.setStrings(key, value)
-            stringsLoader.onComplete()
         }
     }
 }

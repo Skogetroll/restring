@@ -3,23 +3,22 @@ package com.ice.restring
 import android.util.AttributeSet
 import android.util.Pair
 import android.view.View
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Manages all view transformers as a central point for layout inflater.
  * Layout inflater will ask this manager to transform the inflating views.
  */
-class ViewTransformerManager {
+internal class ViewTransformerManager {
 
-    private val transformers = ArrayList<Pair<Class<out View>, Transformer>>()
+    private val transformers = ArrayList<Pair<Class<out View>, Transformer<View>>>()
 
     /**
      * Register a new view transformer to be applied on newly inflating views.
      *
      * @param transformer to be added to transformers list.
      */
-    fun registerTransformer(transformer: Transformer) {
+    fun registerTransformer(transformer: Transformer<View>) {
         transformers.add(Pair(transformer.viewType, transformer))
     }
 
@@ -37,7 +36,7 @@ class ViewTransformerManager {
             return null
         }
 
-        var newView: View = view
+        var newView: View? = view
         for (pair in transformers) {
             val type = pair.first
             if (!type.isInstance(view)) {
@@ -54,13 +53,13 @@ class ViewTransformerManager {
     /**
      * A view transformer skeleton.
      */
-    interface Transformer {
+    internal interface Transformer<out V : View> {
         /**
          * The type of view this transformer is for.
          *
          * @return the type of view.
          */
-        val viewType: Class<out View>
+        val viewType: Class<out V>
 
         /**
          * Apply transformation to a view.
@@ -69,6 +68,6 @@ class ViewTransformerManager {
          * @param attrs attributes of the view.
          * @return the transformed view.
          */
-        fun transform(view: View, attrs: AttributeSet): View
+        fun transform(view: View?, attrs: AttributeSet): V?
     }
 }

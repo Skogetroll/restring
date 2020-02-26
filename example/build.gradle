@@ -27,6 +27,7 @@ dependencies {
     implementation project(":restring")
 
     implementation deps.supportAppCompat
+    implementation deps.supportDesign
     implementation deps.constraintLayout
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

@@ -3,37 +3,40 @@ package com.ice.restring
 /**
  * Contains configuration properties for initializing Restring.
  */
-class RestringConfig private constructor(
-    val persist: Boolean,
-    val stringsLoader: Restring.StringsLoader?,
-    val missingTranslationHandler: Restring.MissingTranslationHandler?
-) {
+class RestringConfig private constructor() {
 
-    data class Builder(
-        private var persist: Boolean = false,
-        private var stringsLoader: Restring.StringsLoader? = null,
-        private var missingTranslationHandler: Restring.MissingTranslationHandler? = null
-    ) {
+    var isPersist: Boolean = false
+        private set
+    var stringsLoader: Restring.StringsLoader? = null
+        private set
 
-        fun persist(persist: Boolean) = apply {
+    class Builder {
+        private var persist: Boolean = false
+        private var stringsLoader: Restring.StringsLoader? = null
+
+        fun persist(persist: Boolean): Builder {
             this.persist = persist
+            return this
         }
-        fun stringsLoader(loader: Restring.StringsLoader) = apply {
+
+        fun stringsLoader(loader: Restring.StringsLoader): Builder {
             this.stringsLoader = loader
+            return this
         }
 
-        fun missingTranslationHandler(handler: Restring.MissingTranslationHandler) = apply {
-            this.missingTranslationHandler = handler
+        fun build(): RestringConfig {
+            val config = RestringConfig()
+            config.isPersist = persist
+            config.stringsLoader = stringsLoader
+            return config
         }
-
-        fun build() = RestringConfig(persist, stringsLoader, missingTranslationHandler)
     }
 
     companion object {
-        @JvmStatic
-        val default: RestringConfig
+
+        internal val default: RestringConfig
             get() = Builder()
-                .persist(true)
-                .build()
+                    .persist(true)
+                    .build()
     }
 }
